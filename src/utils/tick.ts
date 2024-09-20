@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { log, BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 import { bigDecimalExponated, safeDiv } from '.'
-import { Tick } from '../types/schema'
+import { FeeTierToTickSpacing, Tick } from '../types/schema'
 import { Mint as MintEvent } from '../types/templates/Pool/Pool'
 import { ONE_BD, ZERO_BD, ZERO_BI } from './constants'
 
@@ -41,6 +41,8 @@ export function createTick(tickId: string, tickIdx: i32, poolId: string, event: 
 }
 
 export function feeTierToTickSpacing(feeTier: BigInt): BigInt {
+
+  // hardcode already existing fee tiers - so grafting works
   if (feeTier.equals(BigInt.fromI32(10000))) {
     return BigInt.fromI32(200)
   }
@@ -62,6 +64,9 @@ export function feeTierToTickSpacing(feeTier: BigInt): BigInt {
   if (feeTier.equals(BigInt.fromI32(100))) {
     return BigInt.fromI32(1)
   }
-
+  let fts = FeeTierToTickSpacing.load(feeTier.toString())
+  if (fts) {
+    return fts.tickSpacing
+  }
   throw Error('Unexpected fee tier')
 }

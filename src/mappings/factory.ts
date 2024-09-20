@@ -1,12 +1,18 @@
 import { WHITELIST_TOKENS } from './../utils/pricing'
 /* eslint-disable prefer-const */
 import { FACTORY_ADDRESS, ZERO_BI, ONE_BI, ZERO_BD, ADDRESS_ZERO } from './../utils/constants'
-import { Factory } from '../types/schema'
-import { PoolCreated } from '../types/Factory/Factory'
+import { Factory, FeeTierToTickSpacing } from '../types/schema'
+import { FeeAmountEnabled, PoolCreated } from '../types/Factory/Factory'
 import { Pool, Token, Bundle } from '../types/schema'
 import { Pool as PoolTemplate } from '../types/templates'
 import { fetchTokenSymbol, fetchTokenName, fetchTokenTotalSupply, fetchTokenDecimals } from '../utils/token'
 import { log, BigInt, Address } from '@graphprotocol/graph-ts'
+
+export function handleFeeAmountEnabled(event: FeeAmountEnabled): void {
+  let fts = new FeeTierToTickSpacing(event.params.fee.toString())
+  fts.tickSpacing = BigInt.fromI32(event.params.tickSpacing)
+  fts.save()
+}
 
 export function handlePoolCreated(event: PoolCreated): void {
   // temp fix

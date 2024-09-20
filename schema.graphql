@@ -28,6 +28,11 @@ type Factory @entity {
   owner: ID!
 }
 
+type FeeTierToTickSpacing @entity {
+  id: ID!
+  tickSpacing: BigInt!
+}
+
 # stores for USD calculations
 type Bundle @entity {
   id: ID!
