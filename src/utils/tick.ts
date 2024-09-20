@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { BigDecimal, BigInt } from '@graphprotocol/graph-ts'
+import { log, BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 import { bigDecimalExponated, safeDiv } from '.'
 import { Tick } from '../types/schema'
 import { Mint as MintEvent } from '../types/templates/Pool/Pool'
@@ -49,6 +49,15 @@ export function feeTierToTickSpacing(feeTier: BigInt): BigInt {
   }
   if (feeTier.equals(BigInt.fromI32(500))) {
     return BigInt.fromI32(10)
+  }
+  if (feeTier.equals(BigInt.fromI32(400))) {
+    return BigInt.fromI32(8)
+  }
+  if (feeTier.equals(BigInt.fromI32(300))) {
+    return BigInt.fromI32(6)
+  }
+  if (feeTier.equals(BigInt.fromI32(200))) {
+    return BigInt.fromI32(4)
   }
   if (feeTier.equals(BigInt.fromI32(100))) {
     return BigInt.fromI32(1)
