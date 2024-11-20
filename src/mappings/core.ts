@@ -478,14 +478,14 @@ export function handleSwap(event: SwapEvent): void {
 
   // Update inner vars of current or crossed ticks
   let newTick = pool.tick
- 
+  if(newTick && oldTick){
   let tickSpacing = feeTierToTickSpacing(pool.feeTier)
   let modulo = newTick.mod(tickSpacing)
   if (modulo.equals(ZERO_BI)) {
     // Current tick is initialized and needs to be updated
     loadTickUpdateFeeVarsAndSave(newTick.toI32(), event)
   }
-  if(newTick && oldTick){
+
     let numIters = oldTick
       .minus(newTick)
       .abs()
